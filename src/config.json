@@ -1,0 +1,6 @@
+{
+  "default_file_attributes": "rw-r--r--",
+  "unwanted_file_names_characters": ["$", "*"],
+  "unwanted_file_names_characters_substitute_char": "_",
+  "file_extensions_considered_as_temporary": ["tmp"]
+}
