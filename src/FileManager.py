@@ -151,12 +151,21 @@ class FileManager:
         if self.is_global_move or UserInputHandler.ask_if_move_file(file_path, self.target_dir):
             try:
                 shutil.move(file_path, self.target_dir)
-                print('Moved')
+                print('Moved')  # TODO: remove print
             except shutil.Error:  # File path conflict
                 file_name: str = os.path.basename(file_path)
                 target_file_path: str = os.path.join(self.target_dir, file_name)
                 if self.is_global_move:
                     if self.keep_latest_file:
+                        if os.path.getmtime(file_path) > os.path.getmtime(target_file_path):
+                            os.remove(target_file_path)
+                            shutil.move(file_path, target_file_path)
+                    else:
+                        if os.path.getmtime(file_path) < os.path.getmtime(target_file_path):
+                            os.remove(target_file_path)
+                            shutil.move(file_path, target_file_path)
+                else:
+                    if UserInputHandler.ask_if_keep_latest_file(target_file_path):
                         if os.path.getmtime(file_path) > os.path.getmtime(target_file_path):
                             os.remove(target_file_path)
                             shutil.move(file_path, target_file_path)

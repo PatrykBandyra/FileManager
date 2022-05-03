@@ -20,23 +20,23 @@ class UserInputHandler:
         return UserInputHandler.ask_yes_or_no_question()
 
     @staticmethod
+    def ask_when_collision_keep_latest() -> bool:
+        answer: str = input('Type "a" or "b": ')
+        if answer.lower() == 'a':
+            return True
+        elif answer.lower() == 'b':
+            return False
+        else:
+            print('Invalid input. Enter answer again.')
+            UserInputHandler.ask_when_collision_keep_latest()
+
+    @staticmethod
     def ask_if_move_files_globally() -> Tuple[bool, bool]:
         keep_latest_file: bool = True
-
-        def ask_when_collision_keep_latest() -> bool:
-            answer: str = input('Type "a" or "b": ')
-            if answer.lower() == 'a':
-                return True
-            elif answer.lower() == 'b':
-                return False
-            else:
-                print('Invalid input. Enter answer again.')
-                ask_when_collision_keep_latest()
-
         is_global_move: bool = UserInputHandler.ask_if_perform_action_globally()
         if is_global_move:
             print('In case of file collision keep: \na) latest file\nb) oldest file')
-            keep_latest_file = ask_when_collision_keep_latest()
+            keep_latest_file = UserInputHandler.ask_when_collision_keep_latest()
 
         return is_global_move, keep_latest_file
 
@@ -44,6 +44,12 @@ class UserInputHandler:
     def ask_if_move_file(file_path: str, target_dir: str) -> bool:
         print(f'Move {file_path} to target directory: {target_dir} ?')
         return UserInputHandler.ask_yes_or_no_question()
+
+    @staticmethod
+    def ask_if_keep_latest_file(target_file_path: str) -> bool:
+        print(f'Collision: {target_file_path}\n'
+              f'Keep: \na) latest file\nb) oldest file')
+        return UserInputHandler.ask_when_collision_keep_latest()
 
     @staticmethod
     def ask_if_remove_empty_files_from_target_globally(target_dir: str) -> bool:
