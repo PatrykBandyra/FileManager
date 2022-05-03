@@ -43,17 +43,26 @@ class FileManager:
         action_remove_duplicates_from_target: str = 'd'
         action_unify_file_permissions: str = 'p'
         action_change_bad_characters_in_file_names: str = 'c'
+        action_run_all: str = 'a'
         self.actions_dict: Dict[str, Callable] = {
             action_move_files_from_sources_to_target: self.move_files_from_sources_to_target,
             action_remove_empty_files_from_target: self.remove_empty_files_from_target,
             action_remove_temp_files_from_target: self.remove_temp_files_from_target,
-
+            action_remove_duplicates_from_target: self.remove_duplicates_from_target,
+            action_unify_file_permissions: self.unify_files_permissions,
+            action_change_bad_characters_in_file_names: self.replace_bad_chars_in_file_names,
+            action_run_all: self.run
         }
 
-        args = FileManager.get_args()
+        args = self.get_args()
         self.target_dir: str = args.target[0]
         self.src_dirs: List[str] = args.source
         self.config_file_path: str = args.config[0]
+        self.action: str = args.action[0]
+
+        if self.src_dirs is None and self.action in [action_move_files_from_sources_to_target, action_run_all]:
+            print('This action requires to pass source directories as arguments')
+            exit(1)
 
         self.configurations = self.load_configurations()
         self.validate_configuration()
@@ -74,17 +83,18 @@ class FileManager:
         self.is_global_file_names_change: bool = True
         self.is_global_override_files: bool = True
 
-    @staticmethod
-    def get_args() -> argparse.Namespace:
+        self.actions_dict[self.action]()  # Run method based on action chosen by user
+
+    def get_args(self) -> argparse.Namespace:
         parser = argparse.ArgumentParser(
             description='FileManager is a script that helps you in ordering and managing your files')
         parser.add_argument('-t', '--target', nargs=1, type=str, required=True, help='Target directory')
-        parser.add_argument('-s', '--source', nargs='+', type=str, required=True,
+        parser.add_argument('-s', '--source', nargs='+', type=str, required=False,
                             help='Source directories (at least 1)')
         parser.add_argument('-c', '--config', nargs=1, type=str, required=True,
                             help='Path to configuration file (*.json)')
-        # TODO
-        parser.add_argument_group()
+        parser.add_argument('-a', '--action', nargs=1, type=str, required=True, choices=[*self.actions_dict.keys()],
+                            help='Action to be performed on target directory')
         return parser.parse_args()
 
     def load_configurations(self) -> Dict:
@@ -110,10 +120,11 @@ class FileManager:
         if not os.path.isdir(self.target_dir):
             FileManager.logger.error(f'Target directory {self.target_dir} does not exist')
             exit(1)
-        for d in self.src_dirs:
-            if not os.path.isdir(d):
-                FileManager.logger.error(f'Source directory {d} does not exist')
-                exit(1)
+        if self.src_dirs is not None:
+            for d in self.src_dirs:
+                if not os.path.isdir(d):
+                    FileManager.logger.error(f'Source directory {d} does not exist')
+                    exit(1)
 
     def move_files_from_sources_to_target(self) -> None:
         self.is_global_move, self.keep_latest_file = UserInputHandler.ask_if_move_files_globally()
@@ -398,8 +409,7 @@ class FileManager:
 
 
 def main() -> None:
-    fm: FileManager = FileManager()
-    fm.run()
+    FileManager()
 
 
 if __name__ == '__main__':
