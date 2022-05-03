@@ -1,6 +1,7 @@
 {
-  "default_file_attributes": "rw-r--r--",
+  "default_file_permissions": "0o644",
+  "unusual_file_permissions": ["0o777", "0o111", "0o711"],
   "unwanted_file_names_characters": ["$", "*"],
   "unwanted_file_names_characters_substitute_char": "_",
-  "file_extensions_considered_as_temporary": ["tmp"]
+  "file_extensions_considered_as_temporary": ["tmp", "~"]
 }
