@@ -7,9 +7,9 @@ class UserInputHandler:
     def ask_yes_or_no_question() -> bool:
         answer: str = input('Type "y" ("yes") or "n" ("no"): ')
         if answer.lower() == 'y' or answer.lower() == 'yes':
-            return False
-        elif answer.lower() == 'n' or answer.lower() == 'no':
             return True
+        elif answer.lower() == 'n' or answer.lower() == 'no':
+            return False
         else:
             print('Invalid input. Enter answer again.')
             UserInputHandler.ask_yes_or_no_question()
