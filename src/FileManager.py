@@ -151,6 +151,7 @@ class FileManager:
         if self.is_global_move or UserInputHandler.ask_if_move_file(file_path, self.target_dir):
             try:
                 shutil.move(file_path, self.target_dir)
+                print('Moved')
             except shutil.Error:  # File path conflict
                 file_name: str = os.path.basename(file_path)
                 target_file_path: str = os.path.join(self.target_dir, file_name)

@@ -2,7 +2,7 @@
 
 This program allows to:
 
-- move files from source directories (and their subdirectories) into target directory
+- move files from source directories (and their subdirectories) into target directory (the source directories trees are not preserved - all files will be moved into top level)
 - remove empty files from target directory and its subdirectories
 - remove temporary files (defined by user) from target directory and its subdirectories
 - remove duplicated files (based on content) from target directory and its subdirectories
@@ -11,4 +11,4 @@ This program allows to:
 
 This program can be used in 2 modes:
 
--
+- In the first one, when action option (-a or --action) is "a", all functionalities will be 
