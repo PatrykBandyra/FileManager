@@ -16,7 +16,7 @@ class UserInputHandler:
 
     @staticmethod
     def ask_if_perform_action_globally() -> bool:
-        print('Ask about action for each file?')
+        print('Perform action globally?')
         return UserInputHandler.ask_yes_or_no_question()
 
     @staticmethod
