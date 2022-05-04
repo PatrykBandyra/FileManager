@@ -330,8 +330,10 @@ class FileManager:
     def unify_files_permissions(self) -> None:
         self.is_global_file_permissions_unification = \
             UserInputHandler.ask_if_unify_files_perm_globally(self.target_dir,
-                                                              self.configurations[FileManager.default_file_permissions],
-                                                              self.configurations[FileManager.unusual_file_permissions])
+                                                              self.configurations[
+                                                                  FileManager.default_file_permissions.name],
+                                                              self.configurations[
+                                                                  FileManager.unusual_file_permissions.name])
         self.unify_files_permissions_in_directory_tree(self.target_dir)
 
     def unify_files_permissions_in_directory_tree(self, directory: str) -> None:
@@ -349,26 +351,26 @@ class FileManager:
     def unify_file_permissions(self, file_path: str) -> None:
         file_status = os.stat(file_path)
         file_permissions: oct = oct(file_status.st_mode & 0o777)
-        for unusual_perm in self.configurations[FileManager.unusual_file_permissions]:
+        for unusual_perm in self.configurations[FileManager.unusual_file_permissions.name]:
             if oct(int(unusual_perm, 8)) == file_permissions:
                 if self.is_global_file_permissions_unification or \
                         UserInputHandler.ask_if_unify_file_perm(file_path, file_permissions,
                                                                 self.configurations[
-                                                                    FileManager.default_file_permissions]):
-                    os.chmod(file_path, self.configurations[FileManager.default_file_permissions])
+                                                                    FileManager.default_file_permissions.name]):
+                    os.chmod(file_path, self.configurations[FileManager.default_file_permissions.name])
                     break
 
     def replace_bad_chars_in_file_names(self) -> None:
         self.is_global_file_names_change = \
             UserInputHandler.ask_if_change_file_names_globally(self.target_dir,
-                                                               self.configurations[FileManager.unwanted_chars],
-                                                               self.configurations[FileManager.substitute_char])
+                                                               self.configurations[FileManager.unwanted_chars.name],
+                                                               self.configurations[FileManager.substitute_char.name])
         self.is_global_override_files = UserInputHandler.ask_if_change_file_names_override_globally()
         self.replace_bad_chars_in_file_names_in_directory_tree(self.target_dir)
 
     def replace_bad_chars_in_file_names_in_directory_tree(self, directory: str) -> None:
-        bad_chars: List[str] = self.configurations[FileManager.unwanted_chars]
-        sub_char: str = self.configurations[FileManager.substitute_char]
+        bad_chars: List[str] = self.configurations[FileManager.unwanted_chars.name]
+        sub_char: str = self.configurations[FileManager.substitute_char.name]
         for dir_path, _, file_names in os.walk(directory):
             for file_name in file_names:
                 if any(char in file_name for char in bad_chars):
@@ -406,8 +408,8 @@ class FileManager:
             self.remove_duplicates_from_target()
             print(f'Unifying files permissions in target directory {self.target_dir} and its subdirectories')
             self.unify_files_permissions()
-            print(f'Changing bad characters ({self.configurations[FileManager.unwanted_chars]}) '
-                  f'to substitute character {self.configurations[FileManager.substitute_char]} in all files of '
+            print(f'Changing bad characters ({self.configurations[FileManager.unwanted_chars.name]}) '
+                  f'to substitute character {self.configurations[FileManager.substitute_char.name]} in all files of '
                   f'{self.target_dir} and its subdirectories')
             self.replace_bad_chars_in_file_names()
         except KeyboardInterrupt:
