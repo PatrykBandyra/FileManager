@@ -37,12 +37,12 @@ class FileManager:
                                         substitute_char, tmp_file_extensions]
 
     def __init__(self):
-        action_move_files_from_sources_to_target: str = 'm'
-        action_remove_empty_files_from_target: str = 'e'
-        action_remove_temp_files_from_target: str = 't'
-        action_remove_duplicates_from_target: str = 'd'
+        action_move_files_from_sources_to_target: str = 'm'  # ok
+        action_remove_empty_files_from_target: str = 'e'  # ok
+        action_remove_temp_files_from_target: str = 't'  # ok
+        action_remove_duplicates_from_target: str = 'd'  # ok
         action_unify_file_permissions: str = 'p'
-        action_change_bad_characters_in_file_names: str = 'c'
+        action_change_bad_characters_in_file_names: str = 'c'  # ok
         action_run_all: str = 'a'
         self.actions_dict: Dict[str, Callable] = {
             action_move_files_from_sources_to_target: self.move_files_from_sources_to_target,
@@ -357,7 +357,7 @@ class FileManager:
                         UserInputHandler.ask_if_unify_file_perm(file_path, file_permissions,
                                                                 self.configurations[
                                                                     FileManager.default_file_permissions.name]):
-                    os.chmod(file_path, self.configurations[FileManager.default_file_permissions.name])
+                    os.chmod(file_path, int(self.configurations[FileManager.default_file_permissions.name], 8))
                     break
 
     def replace_bad_chars_in_file_names(self) -> None:
