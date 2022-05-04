@@ -114,6 +114,6 @@ class UserInputHandler:
         return UserInputHandler.ask_yes_or_no_question()
 
     @staticmethod
-    def ask_if_override_file_name(old_file_path: str, new_file_path: str):
+    def ask_if_override_file_name(old_file_path: str, new_file_path: str) -> bool:
         print(f'{new_file_path} already exists. Override it with {old_file_path} ?')
         return UserInputHandler.ask_yes_or_no_question()
