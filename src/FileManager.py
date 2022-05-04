@@ -37,12 +37,12 @@ class FileManager:
                                         substitute_char, tmp_file_extensions]
 
     def __init__(self):
-        action_move_files_from_sources_to_target: str = 'm'  # ok
-        action_remove_empty_files_from_target: str = 'e'  # ok
-        action_remove_temp_files_from_target: str = 't'  # ok
-        action_remove_duplicates_from_target: str = 'd'  # ok
+        action_move_files_from_sources_to_target: str = 'm'
+        action_remove_empty_files_from_target: str = 'e'
+        action_remove_temp_files_from_target: str = 't'
+        action_remove_duplicates_from_target: str = 'd'
         action_unify_file_permissions: str = 'p'
-        action_change_bad_characters_in_file_names: str = 'c'  # ok
+        action_change_bad_characters_in_file_names: str = 'c'
         action_run_all: str = 'a'
         self.actions_dict: Dict[str, Callable] = {
             action_move_files_from_sources_to_target: self.move_files_from_sources_to_target,
@@ -90,7 +90,7 @@ class FileManager:
             description='FileManager is a script that helps you in ordering and managing your files')
         parser.add_argument('-t', '--target', nargs=1, type=str, required=True, help='Target directory')
         parser.add_argument('-s', '--source', nargs='+', type=str, required=False,
-                            help='Source directories (at least 1)')
+                            help='Source directories')
         parser.add_argument('-c', '--config', nargs=1, type=str, required=True,
                             help='Path to configuration file (*.json)')
         parser.add_argument('-a', '--action', nargs=1, type=str, required=True, choices=[*self.actions_dict.keys()],
